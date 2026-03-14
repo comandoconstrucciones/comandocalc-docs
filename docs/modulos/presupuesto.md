@@ -6,75 +6,70 @@ sidebar_position: 13
 
 # Presupuesto de Estructura Metálica
 
-![Módulo de presupuesto en ComandoCalc](/img/screenshots/budget.png)
+Estimativo de costos de estructuras metálicas basado en peso real de perfiles, acabados, y costos de instalación. Ideal para cotizaciones preliminares y comparación de alternativas estructurales.
 
-Generación de presupuesto detallado para estructuras de acero. Calcula peso total, costos de material, fabricación, soldadura, pintura y transporte.
+## Parámetros de entrada
 
-## Estructura del presupuesto
-
-Un presupuesto se compone de:
-- **Ítems de estructura** — cada elemento con perfil, cantidad y longitud
-- **Costos de proceso** — soldadura, pernos de anclaje, pintura, transporte
-
-## Parámetros principales
-
-### Encabezado del proyecto
+### Por ítem de estructura
 
 | Parámetro | Descripción |
 |-----------|-------------|
-| `project_name` | Nombre del proyecto |
-| `project_area_m2` | Área cubierta del proyecto (m²) |
+| `description` | Descripción del elemento |
+| `profile_id` | ID del perfil (ej: `IPE-200`, `TR-100x100x4`) |
+| `quantity` | Número de elementos |
+| `length_m` | Longitud por elemento (m) |
+| `finish` | Acabado: `painted` (pintado) o `galvanized` (galvanizado) |
+| `category` | Categoría: `estructura`, `cubierta`, `conexiones`, etc. |
 
-### Ítems de estructura (lista)
+### Parámetros globales
 
-Cada ítem tiene:
+| Parámetro | Descripción | Por defecto |
+|-----------|-------------|-------------|
+| `project_name` | Nombre del proyecto | — |
+| `area_m2` | Área cubierta del proyecto (m²) | — |
+| `include_connections` | Incluir costo estimado de conexiones | `true` |
+| `include_welding` | Incluir costo de soldadura | `true` |
+| `include_painting` | Incluir costo de pintura/galvanizado | `true` |
+| `include_transport` | Incluir flete | `true` |
+| `include_installation` | Incluir montaje | `true` |
 
-| Campo | Unidad | Descripción |
-|-------|--------|-------------|
-| `description` | — | Nombre del elemento |
-| `profile_id` | — | ID del perfil en la base de datos |
-| `quantity` | — | Número de piezas iguales |
-| `length_m` | m | Longitud de cada pieza |
-| `finish` | — | `raw` (sin pintura) o `painted` |
-| `category` | — | `estructura`, `cubierta`, `fachada`, `mezzanine` |
+## Costos unitarios aplicados
 
-### Costos adicionales
+| Ítem | Costo unitario |
+|------|---------------|
+| Material acero (pintado) | Precio de mercado por kg |
+| Material acero (galvanizado) | +30% sobre pintado |
+| Conexiones | ~12% del costo de material |
+| Soldadura | ~8% del costo de material |
+| Transporte | ~5% del subtotal |
+| Instalación/montaje | ~18% del subtotal |
+| IVA | 19% sobre utilidad |
 
-| Parámetro | Unidad | Descripción |
-|-----------|--------|-------------|
-| `num_anchor_bolts` | — | Cantidad de pernos de anclaje |
-| `welding_length_m` | m | Metros de soldadura de filete 3/16" |
-| `painting_area_m2` | m² | Área a pintar (si diferente del calculado) |
-| `transport_ton_km` | — | Toneladas × km de transporte |
+## Visualización
 
-## Desglose de costos
+El módulo incluye **gráfico de desglose** con:
 
-| Rubro | Base de cálculo |
-|-------|----------------|
-| Material acero | Peso total × precio/kg (A-36) |
-| Habilitación y corte | Peso total × tarifa/kg |
-| Soldadura | Metros lineales × tarifa/m |
-| Pintura anticorrosiva | Área m² × tarifa/m² |
-| Pernos de anclaje | Cantidad × precio unitario |
-| Transporte | Ton·km × tarifa |
+- **Barras horizontales** por categoría y costo adicional (escala relativa)
+- Porcentaje de cada ítem sobre el total
+- **Tarjetas de resumen**: Subtotal, IVA, Total y Costo/m²
+- Peso total y relación kg/m²
 
 ## Resultados
 
 | Campo | Descripción |
 |-------|-------------|
 | `total_weight_kg` | Peso total de la estructura (kg) |
-| `total_weight_ton` | Peso en toneladas |
-| `weight_per_m2` | Indicador: kg/m² de área cubierta |
-| `subtotals` | Desglose por categoría |
-| `total` | Total del presupuesto en COP |
-
-## Exportación PDF
-
-La memoria de cálculo incluye:
-- Tabla de ítems con pesos unitarios y totales
-- Desglose de costos por rubro
-- Total en COP con IVA desglosado
-- Indicadores por m² para verificar razonabilidad
+| `total_material_cost` | Costo de material (COP) |
+| `connection_cost` | Costo estimado de conexiones (COP) |
+| `welding_cost` | Costo de soldadura (COP) |
+| `painting_cost` | Costo de pintura/galvanizado (COP) |
+| `transport_cost` | Costo de transporte (COP) |
+| `installation_cost` | Costo de instalación (COP) |
+| `subtotal` | Subtotal antes de IVA (COP) |
+| `iva` | IVA (COP) |
+| `total` | Total del presupuesto (COP) |
+| `cost_per_m2` | Costo por m² de área cubierta (COP/m²) |
+| `categories` | Desglose por categoría de material |
 
 ## Endpoint API
 
@@ -88,33 +83,29 @@ POST /api/calc/budget
 curl -X POST https://api.comandoconstrucciones.com/api/calc/budget \
   -H "Content-Type: application/json" \
   -d '{
-    "project_name": "Nave Industrial 400 m²",
-    "project_area_m2": 400,
-    "num_anchor_bolts": 16,
-    "welding_length_m": 80,
-    "painting_area_m2": 0,
-    "transport_ton_km": 50,
+    "project_name": "Nave Industrial 500m²",
+    "area_m2": 500,
     "items": [
       {
-        "description": "Columnas principales HEA 200",
+        "description": "Columnas principales",
         "profile_id": "HEA-200",
-        "quantity": 8,
+        "quantity": 12,
         "length_m": 6.0,
         "finish": "painted",
         "category": "estructura"
       },
       {
-        "description": "Vigas de cubierta IPE 270",
-        "profile_id": "IPE-270",
-        "quantity": 5,
-        "length_m": 12.0,
+        "description": "Vigas de cubierta",
+        "profile_id": "IPE-300",
+        "quantity": 20,
+        "length_m": 8.0,
         "finish": "painted",
-        "category": "cubierta"
+        "category": "estructura"
       }
     ]
   }'
 ```
 
-:::tip Indicador de referencia
-Estructuras metálicas industriales en Colombia: **25–45 kg/m²**. Una nave simple suele estar en 30–38 kg/m². Si el indicador es muy alto, revisar perfiles sobredimensionados.
+:::tip Perfiles de tubo rectangular (RHS/TR)
+Para estructuras de canchas de pádel y naves industriales, los perfiles tubulares `TR-100x100x4` y `TR-120x60x4` suelen ser más económicos que IPE/HEA para luces menores a 8 m.
 :::

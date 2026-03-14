@@ -44,8 +44,6 @@ Mu = 1.2·CM + 1.6·CV    (mayorada — diseño)
 Ms = CM + 0.5·CV         (servicio — deflexión)
 ```
 
-La carga se convierte de kg/m² a kg/m multiplicando por el ancho tributario.
-
 ## Verificaciones realizadas
 
 ### Flexión (AISC F2 / F3)
@@ -67,37 +65,39 @@ El momento nominal Mn se reduce por **pandeo lateral-torsional (LTB)** si Lb > L
 Vn = 0.6·Fy·Aw·Cv1
 ```
 
-### Deflexión (L/360 viva, L/240 total)
+### Deflexión
 
 ```
-δviva    ≤  L/360   (uso entrepiso)
-δtotal   ≤  L/240   (uso entrepiso)
-δviva    ≤  L/300   (uso cubierta)
+δviva    ≤  L/360   (entrepiso)
+δtotal   ≤  L/240   (entrepiso)
+δviva    ≤  L/300   (cubierta)
 ```
 
-Deflexión calculada con viga biapoyada bajo carga distribuida:
+## Visualización
 
-```
-δ = 5·w·L⁴ / (384·E·Ix)
-```
+El módulo incluye **diagramas interactivos** generados automáticamente al calcular:
+
+- **Diagrama de Momento (M)** — parábola con valor Mu y relación D/C
+- **Diagrama de Cortante (V)** — distribución lineal con valores en extremos
+- **Diagrama de Deflexión (δ)** — curva elástica con comparación al límite admisible
+
+Los tres diagramas se colorean según el estado: verde (D/C ≤ 0.85), ámbar (D/C ≤ 1.0), rojo (D/C > 1.0).
 
 ## Resultados
 
 | Campo | Descripción |
 |-------|-------------|
-| `profile_designation` | Nombre del perfil seleccionado/verificado |
-| `profile_weight` | Peso del perfil en kg/m |
 | `Mu` | Momento último mayorado (kg·m) |
-| `phi_Mn` | Resistencia de diseño a flexión φMn (kg·m) |
-| `Vu` | Cortante último mayorado (kg) |
-| `phi_Vn` | Resistencia de diseño al cortante φVn (kg) |
+| `phi_Mn` | Resistencia de diseño φMn (kg·m) |
+| `Vu` | Cortante último (kg) |
+| `phi_Vn` | Resistencia al cortante φVn (kg) |
 | `deflection_live` | Deflexión bajo carga viva (cm) |
 | `deflection_limit` | Deflexión admisible (cm) |
 | `moment_ratio` | Mu / φMn |
 | `shear_ratio` | Vu / φVn |
 | `deflection_ratio` | δviva / δadm |
 | `status` | `OK` o `FALLA` |
-| `governing` | Qué verificación gobierna el diseño |
+| `governing` | Verificación que gobierna |
 
 ## Endpoint API
 
@@ -122,28 +122,10 @@ curl -X POST https://api.comandoconstrucciones.com/api/calc/beam/optimal \
   }'
 ```
 
-### Ejemplo — Verificación de perfil específico
-
-```bash
-curl -X POST https://api.comandoconstrucciones.com/api/calc/beam \
-  -H "Content-Type: application/json" \
-  -d '{
-    "profile_id": "IPE-240",
-    "dead_load": 250,
-    "live_load": 500,
-    "span": 6.0,
-    "unbraced_length": 6.0,
-    "Cb": 1.0,
-    "use": "floor"
-  }'
-```
-
-## Notas de diseño
-
 :::tip Longitud no arriostrada
-Si la viga tiene arriostramiento lateral en el punto medio, ingresar `unbraced_length = span / 2` para obtener un diseño más económico.
+Si la viga tiene arriostramiento en el punto medio, usar `unbraced_length = span / 2` para un diseño más económico.
 :::
 
 :::note Factor Cb
-Para vigas con carga distribuida uniforme y apoyo en extremos, Cb = 1.14. Para situaciones conservadoras usar Cb = 1.0.
+Para viga con carga distribuida y apoyo en extremos, Cb = 1.14. Para diseño conservador usar Cb = 1.0.
 :::

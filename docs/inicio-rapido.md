@@ -12,10 +12,10 @@ Abrir [calculadora.comandoconstrucciones.com](https://calculadora.comandoconstru
 
 ![Pantalla principal de ComandoCalc](/img/screenshots/homepage.png)
 
-1. **Seleccionar módulo** — en la pantalla principal aparecen los 13 módulos disponibles
+1. **Seleccionar módulo** — en la pantalla principal aparecen los 16 módulos disponibles
 2. **Ingresar datos** — cada módulo tiene un formulario con valores por defecto típicos
-3. **Calcular** — clic en el botón azul "Calcular" o "Buscar perfil óptimo"
-4. **Ver resultados** — tabla con demanda, capacidad, relación D/C y estado OK / NO CUMPLE
+3. **Calcular** — clic en el botón verde "Calcular" o "Buscar perfil óptimo"
+4. **Ver resultados** — visualización gráfica (diagramas M/V, diagrama de interacción, vista en planta, 3D) + tabla de verificaciones con D/C
 5. **Exportar PDF** — clic en "Descargar PDF" para obtener la memoria de cálculo lista para entrega
 
 ## Usar la API

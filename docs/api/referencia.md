@@ -6,6 +6,8 @@ sidebar_position: 3
 
 # Referencia completa de endpoints
 
+**Base URL:** `https://api.comandoconstrucciones.com`
+
 ## Resumen
 
 | Método | Endpoint | Descripción |
@@ -18,6 +20,7 @@ sidebar_position: 3
 | POST | `/api/calc/beam` | Verificar viga |
 | POST | `/api/calc/beam/optimal` | Viga óptima |
 | POST | `/api/calc/column` | Verificar columna |
+| POST | `/api/calc/column/optimal` | Columna óptima |
 | POST | `/api/calc/purlin` | Correas de cubierta |
 | POST | `/api/calc/facade-purlin` | Correas de fachada |
 | POST | `/api/calc/wind` | Cargas de viento |
@@ -29,29 +32,41 @@ sidebar_position: 3
 | POST | `/api/calc/flexo-compression` | Flexo-compresión |
 | POST | `/api/calc/composite-column` | Columna compuesta |
 | POST | `/api/calc/budget` | Presupuesto |
+| POST | `/api/calc/connection/shear-tab` | Conexión simple (Shear Tab) |
+| POST | `/api/calc/connection/fillet-weld` | Soldadura en filete |
+| POST | `/api/calc/connection/moment` | Conexión a momento |
+| GET | `/api/calc/connection/bolt-types` | Tipos de pernos |
+| GET | `/api/calc/connection/electrodes` | Electrodos disponibles |
+
+**Total: 25 endpoints**
+
+---
+
+## Rate Limiting
+
+| Tipo | Límite |
+|------|--------|
+| Cálculos (`/api/calc/*`) | **30 solicitudes/minuto** por IP |
+| Datos (`/api/profiles`, `/api/cities`) | 200 solicitudes/hora por IP |
+
+Responde `HTTP 429 Too Many Requests` al superarlo.
 
 ---
 
 ## GET `/`
 
-Health check del servicio.
+Health check.
 
-**Respuesta:**
 ```json
-{
-  "app": "ComandoCalc",
-  "version": "0.1.0",
-  "status": "ok"
-}
+{ "app": "ComandoCalc", "version": "0.1.0", "status": "ok" }
 ```
 
 ---
 
 ## POST `/api/calc/beam`
 
-Verificar si un perfil específico cumple bajo cargas de flexión.
+Verificar viga bajo flexión + cortante + deflexión (AISC F, G).
 
-**Request:**
 ```json
 {
   "profile_id": "IPE-200",
@@ -69,17 +84,15 @@ Verificar si un perfil específico cumple bajo cargas de flexión.
 {
   "profile_id": "IPE-200",
   "profile_designation": "IPE 200",
-  "profile_weight": 22.4,
   "Mu": 2531.25,
-  "Vu": 2025.0,
-  "deflection_total": 1.21,
-  "deflection_live": 0.92,
   "phi_Mn": 3843.2,
+  "Vu": 2025.0,
   "phi_Vn": 24710.4,
+  "deflection_live": 0.92,
   "deflection_limit": 1.39,
   "moment_ratio": 0.659,
   "shear_ratio": 0.082,
-  "deflection_ratio": 0.664,
+  "deflection_ratio": 0.661,
   "status": "OK",
   "governing": "Momento"
 }
@@ -89,36 +102,31 @@ Verificar si un perfil específico cumple bajo cargas de flexión.
 
 ## POST `/api/calc/beam/optimal`
 
-Seleccionar el perfil más liviano de una familia que cumpla.
+Selecciona el perfil más liviano que cumple.
 
-**Request:**
 ```json
 {
-  "dead_load": 150,
-  "live_load": 300,
-  "span": 5.0,
-  "unbraced_length": 5.0,
-  "Cb": 1.0,
+  "dead_load": 250,
+  "live_load": 500,
+  "span": 6.0,
+  "unbraced_length": 6.0,
   "profile_type": "ipe",
   "use": "floor"
 }
 ```
 
-**profile_type válidos:** `ipe`, `hea`, `heb`, `w`, `c`, `l`, `tr`, `rhs`
-
-**Response:** misma estructura que `/api/calc/beam`
-
 ---
 
 ## POST `/api/calc/column`
 
-Verificar columna a compresión axial.
+Columna bajo compresión + momento (AISC E, H1).
 
-**Request:**
 ```json
 {
   "profile_id": "HEA-200",
-  "axial_load": 25000,
+  "Pu": 25000,
+  "Mux": 800,
+  "Muy": 0,
   "height": 4.0,
   "Kx": 1.0,
   "Ky": 1.0
@@ -128,14 +136,15 @@ Verificar columna a compresión axial.
 **Response:**
 ```json
 {
-  "profile_designation": "HEA 200",
-  "Pu": 25000,
-  "phi_Pn": 68420.0,
-  "slenderness_x": 62.4,
-  "slenderness_y": 74.1,
-  "ratio": 0.365,
+  "phi_Pn": 48320,
+  "phi_Mnx": 9840,
+  "phi_Mny": 4210,
+  "axial_ratio": 0.517,
+  "interaction_ratio": 0.773,
+  "interaction_eq": "H1-1a",
+  "KLr_max": 68.4,
   "status": "OK",
-  "governing": "Eje Y"
+  "governing": "Interacción H1-1a"
 }
 ```
 
@@ -143,9 +152,8 @@ Verificar columna a compresión axial.
 
 ## POST `/api/calc/wind`
 
-Calcular cargas de viento por ciudad colombiana (NSR-10).
+Cargas de viento NSR-10 Título B para una ciudad colombiana.
 
-**Request:**
 ```json
 {
   "city_id": 150,
@@ -161,26 +169,42 @@ Calcular cargas de viento por ciudad colombiana (NSR-10).
 }
 ```
 
-**roof_type:** `dos_aguas`, `plana`  
-**exposure:** `B`, `C`, `D`  
-**enclosure:** `closed`, `open`, `partially_open`  
-**topography:** `flat`, `hill`, `ridge`, `escarpment`
+---
+
+## POST `/api/calc/baseplate`
+
+Placa base bajo carga axial y momento (AISC DG-1).
+
+```json
+{
+  "Pu": 30000,
+  "Mux": 0,
+  "column_depth": 20.0,
+  "column_bf": 20.0,
+  "concrete_fc": 210,
+  "pedestal_width": 50,
+  "pedestal_length": 50,
+  "plate_steel": "A36",
+  "bolt_size": "3/4",
+  "num_bolts": 4
+}
+```
 
 **Response:**
 ```json
 {
-  "city_name": "Bogotá",
-  "department": "Cundinamarca",
-  "Vb": 27.0,
-  "S1": 1.0,
-  "S2": 1.0,
-  "S3": 0.97,
-  "Vd": 26.2,
-  "qh": 42.1,
-  "p_windward": 28.4,
-  "p_leeward": -16.2,
-  "p_roof": -24.8,
-  "p_sidewall": -21.3
+  "N": 35.0,
+  "B": 35.0,
+  "t_req": 1.83,
+  "t_recommended": 1.905,
+  "phi_Pp": 54123,
+  "bearing_ratio": 0.554,
+  "bolt_size": "3/4",
+  "num_bolts": 4,
+  "bolt_tension": 0,
+  "bolt_ratio": 0,
+  "status": "OK",
+  "governing": "Aplastamiento concreto"
 }
 ```
 
@@ -188,42 +212,18 @@ Calcular cargas de viento por ciudad colombiana (NSR-10).
 
 ## POST `/api/calc/truss`
 
-Analizar y diseñar cercha metálica plana.
+Cercha metálica 2D por FEM (AISC D, E).
 
-**Request:**
 ```json
 {
   "span": 12.0,
-  "height": 1.5,
+  "height": 2.0,
   "num_panels": 6,
   "truss_type": "pratt",
-  "dead_load": 15,
-  "live_load": 50,
-  "wind_load": 30,
-  "tributary_width": 5.0,
-  "chord_profile_id": "TR-100x100x4",
-  "web_profile_id": "TR-80x80x3"
-}
-```
-
-**truss_type:** `pratt`, `warren`, `howe`
-
-**Response:**
-```json
-{
-  "status": "OK",
-  "max_deflection_cm": 0.89,
-  "deflection_limit_cm": 3.33,
-  "members": [
-    {
-      "member_id": "CS1",
-      "type": "chord_top",
-      "force": -8420.0,
-      "phi_Pn": 12350.0,
-      "ratio": 0.682,
-      "status": "OK"
-    }
-  ]
+  "dead_load": 80,
+  "live_load": 100,
+  "wind_load": 40,
+  "profile_id": "L-75x75x6"
 }
 ```
 
@@ -231,112 +231,176 @@ Analizar y diseñar cercha metálica plana.
 
 ## POST `/api/calc/frame`
 
-Analizar pórtico metálico 2D con combinaciones de carga.
+Pórtico metálico 2D bajo cargas gravitacionales + viento (AISC H, NSR-10 deriva).
 
-**Request:**
 ```json
 {
-  "bay_width": 12.0,
-  "column_height": 6.0,
-  "roof_angle": 10.0,
-  "dead_load": 30,
-  "live_load": 50,
-  "wind_pressure": 60,
-  "tributary_width": 5.0,
-  "column_profile_id": "HEA-260",
-  "rafter_profile_id": "IPE-300"
+  "num_bays": 2,
+  "bay_width": 6.0,
+  "height": 4.5,
+  "dead_load": 150,
+  "live_load": 300,
+  "wind_pressure": 80,
+  "column_id": "HEA-200",
+  "beam_id": "IPE-300",
+  "support_type": "fixed"
+}
+```
+
+---
+
+## POST `/api/calc/connection/shear-tab`
+
+Conexión simple a cortante con pernos (AISC J3, J4).
+
+```json
+{
+  "Vu": 8000,
+  "bolt_type": "A325-3/4",
+  "n_bolts": 4,
+  "connection_type": "bearing",
+  "plate_steel": "A36",
+  "plate_thickness": 0.953,
+  "beam_web_thickness": 0.6,
+  "beam_Fu": 4080,
+  "edge_dist": 3.81,
+  "bolt_spacing": 7.62,
+  "weld_size": 0.635,
+  "electrode": "E70",
+  "n_weld_lines": 2
 }
 ```
 
 **Response:**
 ```json
 {
+  "bolt_type": "A325-3/4",
+  "n_bolts": 4,
+  "plate_width": 9.6,
+  "plate_height": 30.5,
+  "plate_thickness": 0.953,
+  "weld_size": 0.635,
+  "weld_length": 30.5,
+  "checks": [
+    { "name": "Cortante de pernos (J3.6)", "demand": 8000, "capacity": 38015, "ratio": 0.210, "status": "OK" },
+    { "name": "Aplastamiento en placa (J3.10)", "demand": 8000, "capacity": 41880, "ratio": 0.191, "status": "OK" }
+  ],
+  "max_ratio": 0.391,
   "status": "OK",
-  "max_drift_ratio": 0.0021,
-  "drift_limit": 0.0025,
-  "governing_combo": "1.2D + 1.0W + 1.0L",
-  "members": [
-    {
-      "member_id": "COL-L",
-      "type": "column",
-      "Pu": 12450,
-      "Mu": 8320,
-      "interaction_ratio": 0.74,
-      "status": "OK"
-    }
-  ]
+  "governing": "Block shear en placa (J4.3)"
 }
 ```
 
 ---
 
-## POST `/api/calc/budget`
+## POST `/api/calc/connection/fillet-weld`
 
-Generar presupuesto de estructura metálica.
+Soldadura en filete bajo cortante y/o normal (AISC J2.4).
 
-Ver ejemplo completo en el [módulo de Presupuesto](/docs/modulos/presupuesto#ejemplo).
-
----
-
-## POST `/api/calc/flexo-compression`
-
-Verificar interacción axial + flexión AISC H1.
-
-**Request:**
 ```json
 {
-  "profile_id": "HEA-240",
-  "Pu": 30000,
-  "Mux": 4000,
-  "Muy": 0,
-  "KLx": 4.0,
-  "KLy": 4.0,
-  "Cm": 0.85
+  "Vu": 5000,
+  "Nu": 0,
+  "weld_size": 0.794,
+  "weld_length": 25.0,
+  "n_welds": 2,
+  "electrode": "E70",
+  "base_metal_thickness": 1.27,
+  "base_metal_Fu": 4080
 }
 ```
 
 **Response:**
 ```json
 {
-  "profile_designation": "HEA 240",
-  "Pu": 30000,
-  "phi_Pn": 98420,
-  "Mux_amplified": 4180,
-  "phi_Mnx": 14320,
-  "B1": 1.045,
-  "interaction_ratio": 0.621,
-  "status": "OK"
+  "weld_size": 0.794,
+  "throat": 0.5614,
+  "Aw": 28.07,
+  "phi_Rn_weld": 62230,
+  "phi_Rn_shear_base": 97524,
+  "phi_Rn": 62230,
+  "ratio": 0.0803,
+  "status": "OK",
+  "governing": "Soldadura",
+  "min_size_req": 0.476,
+  "size_ok": true
 }
 ```
 
 ---
 
-## POST `/api/calc/composite-column`
+## POST `/api/calc/connection/moment`
 
-Diseño de columna compuesta CFT o SRC.
+Conexión momento soldada viga-columna (AISC J2, J4, J10).
 
-**Request:**
 ```json
 {
-  "section_type": "CFT",
-  "profile_id": "TR-200x200x8",
-  "fc": 210,
-  "height": 4.0,
-  "K": 1.0,
-  "Pu": 60000
+  "Mu": 12000,
+  "Vu": 3000,
+  "beam_depth": 24.0,
+  "beam_flange_width": 12.0,
+  "beam_flange_thickness": 0.98,
+  "beam_web_thickness": 0.60,
+  "column_flange_thickness": 1.50,
+  "electrode": "E70",
+  "bolt_type": "A325-3/4",
+  "n_bolts_web": 3
 }
 ```
 
 **Response:**
 ```json
 {
-  "section_type": "CFT",
-  "profile_designation": "TR 200×200×8",
-  "As_cm2": 59.2,
-  "Ac_cm2": 340.8,
-  "phi_Pno": 142800,
-  "phi_Pn": 118600,
-  "ratio": 0.506,
-  "status": "OK"
+  "flange_force": 52830,
+  "weld_size_flange": 0.82,
+  "phi_Rn_flange_weld": 53940,
+  "flange_weld_ratio": 0.979,
+  "flange_weld_status": "OK",
+  "phi_Rfl": 127800,
+  "column_flange_ratio": 0.413,
+  "column_flange_status": "OK",
+  "max_ratio": 0.979,
+  "status": "OK",
+  "governing": "Soldadura alas"
 }
+```
+
+---
+
+## GET `/api/calc/connection/bolt-types`
+
+Lista de pernos estructurales disponibles con área y diámetro.
+
+---
+
+## GET `/api/calc/connection/electrodes`
+
+Lista de electrodos disponibles con FEXX en kg/cm².
+
+---
+
+## GET `/api/profiles`
+
+Lista todos los perfiles disponibles. Soporta filtros por familia.
+
+**Parámetros query:**
+- `family`: `ipe`, `hea`, `heb`, `w`, `c`, `l`, `tr`, `rhs`
+
+```
+GET /api/profiles?family=ipe
+```
+
+---
+
+## GET `/api/cities`
+
+Lista ciudades colombianas con velocidad de viento NSR-10.
+
+**Parámetros query:**
+- `department`: nombre del departamento
+- `search`: búsqueda por nombre
+
+```
+GET /api/cities?department=Antioquia
+GET /api/cities?search=bogota
 ```

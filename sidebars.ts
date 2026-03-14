@@ -34,6 +34,7 @@ const sidebars: SidebarsConfig = {
         'modulos/portico',
         'modulos/flexo-compresion',
         'modulos/columna-compuesta',
+        'modulos/conexiones',
         'modulos/presupuesto',
       ],
     },
