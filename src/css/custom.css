@@ -12,10 +12,6 @@
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
   --docusaurus-highlighted-code-line-bg: rgba(56, 102, 64, 0.10);
 
-  /* Navbar con verde oscuro */
-  --ifm-navbar-background-color: #386640;
-  --ifm-navbar-link-color: #f0f5e9;
-  --ifm-navbar-link-hover-color: #a7c958;
 }
 
 [data-theme='dark'] {
@@ -29,23 +25,29 @@
   --docusaurus-highlighted-code-line-bg: rgba(167, 201, 88, 0.12);
 }
 
-/* Navbar */
-.navbar {
+/* Navbar — solo light mode */
+[data-theme='light'] .navbar {
+  background-color: #386640;
   border-bottom: 2px solid #2f5636;
 }
 
-.navbar__brand {
+[data-theme='light'] .navbar__brand,
+[data-theme='light'] .navbar__brand:hover {
   color: #ffffff !important;
-  font-weight: 700;
 }
 
-.navbar__link {
+[data-theme='light'] .navbar__link {
   color: #f0f5e9 !important;
 }
 
-.navbar__link:hover,
-.navbar__link--active {
+[data-theme='light'] .navbar__link:hover,
+[data-theme='light'] .navbar__link--active {
   color: #a7c958 !important;
+}
+
+/* Dark mode navbar — usa los defaults de Docusaurus con acento verde */
+[data-theme='dark'] .navbar {
+  border-bottom: 2px solid #386640;
 }
 
 /* Hero */
