@@ -1,0 +1,61 @@
+---
+id: intro
+title: ¿Qué es ComandoCalc?
+sidebar_position: 1
+---
+
+# ComandoCalc — Cálculo Estructural de Acero
+
+**ComandoCalc** es una calculadora estructural web diseñada específicamente para ingenieros civiles y estructurales colombianos. Permite dimensionar elementos de acero bajo la norma **AISC 360-16** con cargas sísmicas y de viento según la **NSR-10**.
+
+## Características principales
+
+- **13 módulos de cálculo** — desde vigas simples hasta pórticos 2D y columnas compuestas
+- **Base de datos integrada** — 160 perfiles de acero laminado (IPE, HEA, HEB, W, C, L, TR, RHS) y 916 ciudades colombianas con datos de viento y sismo
+- **Unidades colombianas** — sistema CGS: kg, cm, kg/cm²
+- **Exportación PDF** — memoria de cálculo lista para entregar al cliente o a la interventoría
+- **API REST** — todos los cálculos disponibles como endpoints JSON para integrar con otros sistemas
+- **Código abierto** — backend Python (FastAPI) y frontend TypeScript (Next.js)
+
+## ¿Para quién es?
+
+| Perfil | Uso |
+|--------|-----|
+| Ingeniero estructural | Dimensionamiento rápido de elementos en obra |
+| Ingeniero calculista | Verificación de diseños y memorias de cálculo |
+| Empresa constructora | Integración via API en sistemas internos |
+| Estudiante de ingeniería | Referencia de cálculo bajo AISC + NSR-10 |
+
+## Arquitectura
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Frontend (Next.js + TypeScript)                     │
+│  calculadora.comandoconstrucciones.com               │
+│  Vercel                                              │
+└───────────────────┬─────────────────────────────────┘
+                    │ HTTPS / JSON
+┌───────────────────▼─────────────────────────────────┐
+│  API REST (Python + FastAPI)                         │
+│  api.comandoconstrucciones.com                       │
+│  Vercel Serverless Functions                         │
+└───────────────────┬─────────────────────────────────┘
+                    │ SQL
+┌───────────────────▼─────────────────────────────────┐
+│  Supabase PostgreSQL                                 │
+│  160 perfiles de acero · 916 ciudades                │
+└─────────────────────────────────────────────────────┘
+```
+
+## Repositorios
+
+| Repositorio | Descripción |
+|------------|-------------|
+| [`comandocalc`](https://github.com/comandoconstrucciones/comandocalc) | Frontend + Backend (monorepo) |
+| [`comandocalc-docs`](https://github.com/comandoconstrucciones/comandocalc-docs) | Esta documentación |
+
+## Normas aplicadas
+
+- **AISC 360-16** — Especificación para edificios de acero estructural
+- **NSR-10** — Norma Sismo Resistente colombiana (viento: Título B; sismo: Título A)
+- **CIRSOC 302** — Referencia para perfiles laminados latinoamericanos

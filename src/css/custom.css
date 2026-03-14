@@ -1,0 +1,77 @@
+/* ComandoCalc Docs — Paleta corporativa Comando Construcciones */
+
+:root {
+  --ifm-color-primary: #c8102e;         /* rojo Comando */
+  --ifm-color-primary-dark: #b40e29;
+  --ifm-color-primary-darker: #a90d27;
+  --ifm-color-primary-darkest: #8b0b20;
+  --ifm-color-primary-light: #d42233;
+  --ifm-color-primary-lighter: #d92b3b;
+  --ifm-color-primary-lightest: #e14355;
+  --ifm-code-font-size: 90%;
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgba(200, 16, 46, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #ff4d6a;
+  --ifm-color-primary-dark: #ff3358;
+  --ifm-color-primary-darker: #ff264e;
+  --ifm-color-primary-darkest: #ff0031;
+  --ifm-color-primary-light: #ff6780;
+  --ifm-color-primary-lighter: #ff748b;
+  --ifm-color-primary-lightest: #ff9aaa;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 77, 106, 0.12);
+}
+
+/* Navbar */
+.navbar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Badges de estado en tablas */
+.badge--ok {
+  background: #dcfce7;
+  color: #166534;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge--required {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge--optional {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Mejoras para tablas de parámetros */
+table th {
+  white-space: nowrap;
+}
+
+/* Hero de la página de inicio */
+.hero-comandocalc {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: white;
+}
+
+.hero-comandocalc .hero__title {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.hero-comandocalc .hero__subtitle {
+  font-size: 1.25rem;
+  opacity: 0.85;
+}
