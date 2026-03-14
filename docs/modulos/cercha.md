@@ -6,6 +6,8 @@ sidebar_position: 9
 
 # Cercha Metálica
 
+![Módulo de cerchas metálicas en ComandoCalc](/img/screenshots/truss.png)
+
 Análisis y diseño de cerchas planas (armaduras 2D) mediante **elementos finitos** (FEM). Verifica cada miembro a tensión o compresión según AISC 360-16.
 
 ## Parámetros de entrada

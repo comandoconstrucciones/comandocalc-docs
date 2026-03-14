@@ -6,6 +6,8 @@ sidebar_position: 13
 
 # Presupuesto de Estructura Metálica
 
+![Módulo de presupuesto en ComandoCalc](/img/screenshots/budget.png)
+
 Generación de presupuesto detallado para estructuras de acero. Calcula peso total, costos de material, fabricación, soldadura, pintura y transporte.
 
 ## Estructura del presupuesto

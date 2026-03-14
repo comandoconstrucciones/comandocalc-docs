@@ -8,17 +8,19 @@ sidebar_position: 2
 
 ## Usar la app web
 
-La forma más sencilla: abrir [calculadora.comandoconstrucciones.com](https://calculadora.comandoconstrucciones.com) en cualquier navegador.
+Abrir [calculadora.comandoconstrucciones.com](https://calculadora.comandoconstrucciones.com) en cualquier navegador.
+
+![Pantalla principal de ComandoCalc](/img/screenshots/homepage.png)
 
 1. **Seleccionar módulo** — en la pantalla principal aparecen los 13 módulos disponibles
 2. **Ingresar datos** — cada módulo tiene un formulario con valores por defecto típicos
-3. **Calcular** — clic en el botón azul "Calcular"
+3. **Calcular** — clic en el botón azul "Calcular" o "Buscar perfil óptimo"
 4. **Ver resultados** — tabla con demanda, capacidad, relación D/C y estado OK / NO CUMPLE
-5. **Exportar PDF** — clic en "Descargar PDF" para obtener la memoria de cálculo
+5. **Exportar PDF** — clic en "Descargar PDF" para obtener la memoria de cálculo lista para entrega
 
 ## Usar la API
 
-La API REST no requiere autenticación. Todos los endpoints reciben y devuelven JSON.
+La API REST está disponible en `https://api.comandoconstrucciones.com`. No requiere autenticación para uso estándar, pero sí aplica **rate limiting de 30 solicitudes/minuto** por IP.
 
 ### Ejemplo: diseño de viga
 
@@ -71,49 +73,19 @@ curl -X POST https://api.comandoconstrucciones.com/api/calc/wind \
   }'
 ```
 
-## Instalar y correr localmente
+### Rate limiting
 
-### Requisitos
+| Tipo de endpoint | Límite |
+|-----------------|--------|
+| Cálculos (`/api/calc/*`) | 30 solicitudes/minuto por IP |
+| Datos (`/api/profiles`, `/api/cities`) | 200 solicitudes/hora por IP |
 
-- Python 3.11+
-- Node.js 18+
-- Cuenta Supabase (o variables de entorno ya configuradas)
+Cuando se supera el límite, la API responde con `HTTP 429 Too Many Requests`.
 
-### Backend (API)
+Para integraciones de alto volumen o uso empresarial, contactar a [Comando Construcciones](https://www.comandoconstrucciones.com).
 
-```bash
-git clone https://github.com/comandoconstrucciones/comandocalc.git
-cd comandocalc/backend
+## Documentación interactiva (Swagger)
 
-pip install -r requirements.txt
+La API incluye documentación interactiva donde puede probar todos los endpoints directamente desde el navegador:
 
-# Variables de entorno
-cp .env.example .env
-# Editar .env con SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY
-
-uvicorn main:app --reload --port 8000
-```
-
-La API queda en `http://localhost:8000`. Swagger UI en `http://localhost:8000/docs`.
-
-### Frontend
-
-```bash
-cd comandocalc/frontend
-
-npm install
-
-# Variables de entorno
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
-
-npm run dev
-```
-
-La app queda en `http://localhost:3000`.
-
-### Verificar instalación
-
-```bash
-curl http://localhost:8000/
-# {"app":"ComandoCalc","version":"0.1.0","status":"ok"}
-```
+**→ [api.comandoconstrucciones.com/docs](https://api.comandoconstrucciones.com/docs)**

@@ -6,6 +6,8 @@ sidebar_position: 5
 
 # Cargas de Viento (NSR-10 Título B)
 
+![Módulo de cargas de viento en ComandoCalc](/img/screenshots/wind.png)
+
 Cálculo de cargas de viento sobre edificaciones cerradas, usando la **velocidad básica de viento por ciudad colombiana** de la tabla B.6.3.1 de la NSR-10.
 
 ## Parámetros de entrada

@@ -6,6 +6,8 @@ sidebar_position: 1
 
 # Viga de Entrepiso / Mezanine
 
+![Módulo de diseño de vigas en ComandoCalc](/img/screenshots/beam.png)
+
 Diseño de vigas de acero bajo cargas gravitacionales. Verifica **flexión, cortante y deflexión** según AISC 360-16 Capítulos F y G.
 
 ## Modos de cálculo

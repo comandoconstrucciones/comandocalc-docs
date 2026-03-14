@@ -6,6 +6,8 @@ sidebar_position: 2
 
 # Columna
 
+![Módulo de columnas en ComandoCalc](/img/screenshots/column.png)
+
 Diseño de columnas de acero bajo **carga axial de compresión** según AISC 360-16 Capítulo E.
 
 ## Parámetros de entrada
