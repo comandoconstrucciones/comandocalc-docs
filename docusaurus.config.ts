@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'ComandoCalc',
   tagline: 'Cálculo estructural de acero para ingenieros colombianos',
-  favicon: '/img/favicon.ico',
+  favicon: 'favicon.ico',
   url: 'https://docs.comandoconstrucciones.com',
   baseUrl: '/',
   organizationName: 'comandoconstrucciones',
