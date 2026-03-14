@@ -10,7 +10,7 @@ sidebar_position: 1
 
 ## Características principales
 
-- **13 módulos de cálculo** — desde vigas simples hasta pórticos 2D y columnas compuestas
+- **15 módulos de cálculo** — desde vigas simples hasta pórticos 2D, naves industriales y columnas compuestas
 - **Base de datos integrada** — 160 perfiles de acero laminado (IPE, HEA, HEB, W, C, L, TR, RHS) y 916 ciudades colombianas con datos de viento y sismo
 - **Unidades colombianas** — sistema CGS: kg, cm, kg/cm²
 - **Exportación PDF** — memoria de cálculo lista para entregar al cliente o a la interventoría
@@ -24,13 +24,6 @@ sidebar_position: 1
 | Ingeniero calculista | Verificación de diseños y memorias de cálculo |
 | Empresa constructora | Integración via API en sistemas internos |
 | Estudiante de ingeniería | Referencia de cálculo bajo AISC + NSR-10 |
-
-## Repositorios
-
-| Repositorio | Descripción |
-|------------|-------------|
-| [`comandocalc`](https://github.com/comandoconstrucciones/comandocalc) | Frontend + Backend (monorepo) |
-| [`comandocalc-docs`](https://github.com/comandoconstrucciones/comandocalc-docs) | Esta documentación |
 
 ## Normas aplicadas
 
