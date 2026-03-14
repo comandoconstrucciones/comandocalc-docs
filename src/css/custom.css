@@ -1,35 +1,70 @@
 /* ComandoCalc Docs — Paleta corporativa Comando Construcciones */
 
 :root {
-  --ifm-color-primary: #c8102e;         /* rojo Comando */
-  --ifm-color-primary-dark: #b40e29;
-  --ifm-color-primary-darker: #a90d27;
-  --ifm-color-primary-darkest: #8b0b20;
-  --ifm-color-primary-light: #d42233;
-  --ifm-color-primary-lighter: #d92b3b;
-  --ifm-color-primary-lightest: #e14355;
+  --ifm-color-primary: #386640;         /* verde oscuro */
+  --ifm-color-primary-dark: #2f5636;
+  --ifm-color-primary-darker: #2b4f32;
+  --ifm-color-primary-darkest: #1e3823;
+  --ifm-color-primary-light: #6a9851;
+  --ifm-color-primary-lighter: #7aab5f;
+  --ifm-color-primary-lightest: #a7c958;
   --ifm-code-font-size: 90%;
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
-  --docusaurus-highlighted-code-line-bg: rgba(200, 16, 46, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(56, 102, 64, 0.10);
+
+  /* Navbar con verde oscuro */
+  --ifm-navbar-background-color: #386640;
+  --ifm-navbar-link-color: #f0f5e9;
+  --ifm-navbar-link-hover-color: #a7c958;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #ff4d6a;
-  --ifm-color-primary-dark: #ff3358;
-  --ifm-color-primary-darker: #ff264e;
-  --ifm-color-primary-darkest: #ff0031;
-  --ifm-color-primary-light: #ff6780;
-  --ifm-color-primary-lighter: #ff748b;
-  --ifm-color-primary-lightest: #ff9aaa;
-  --docusaurus-highlighted-code-line-bg: rgba(255, 77, 106, 0.12);
+  --ifm-color-primary: #a7c958;         /* verde claro para dark mode */
+  --ifm-color-primary-dark: #96b847;
+  --ifm-color-primary-darker: #8bae3f;
+  --ifm-color-primary-darkest: #6f8f2e;
+  --ifm-color-primary-light: #b4d469;
+  --ifm-color-primary-lighter: #bcd976;
+  --ifm-color-primary-lightest: #cde494;
+  --docusaurus-highlighted-code-line-bg: rgba(167, 201, 88, 0.12);
 }
 
 /* Navbar */
 .navbar {
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  border-bottom: 2px solid #2f5636;
 }
 
-/* Badges de estado en tablas */
+.navbar__brand {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.navbar__link {
+  color: #f0f5e9 !important;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: #a7c958 !important;
+}
+
+/* Hero */
+.hero-comandocalc {
+  background: linear-gradient(135deg, #1e3823 0%, #386640 60%, #6a9851 100%);
+  color: white;
+}
+
+.hero-comandocalc .hero__title {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.hero-comandocalc .hero__subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+/* Badges de estado */
 .badge--ok {
   background: #dcfce7;
   color: #166534;
@@ -55,23 +90,19 @@
   font-weight: 600;
 }
 
-/* Mejoras para tablas de parámetros */
+/* Tablas */
 table th {
   white-space: nowrap;
 }
 
-/* Hero de la página de inicio */
-.hero-comandocalc {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: white;
+/* Sidebar activo */
+.menu__link--active {
+  background-color: rgba(167, 201, 88, 0.12);
+  color: #386640;
+  font-weight: 600;
 }
 
-.hero-comandocalc .hero__title {
-  font-size: 3rem;
-  font-weight: 800;
-}
-
-.hero-comandocalc .hero__subtitle {
-  font-size: 1.25rem;
-  opacity: 0.85;
+/* Admonitions con verde */
+.alert--success {
+  border-left-color: #6a9851;
 }
