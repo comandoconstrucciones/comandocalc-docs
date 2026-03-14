@@ -6,7 +6,7 @@ const config: Config = {
   title: 'ComandoCalc',
   tagline: 'Cálculo estructural de acero para ingenieros colombianos',
   favicon: '/img/favicon.ico',
-  url: 'https://comandocalc-docs.vercel.app',  // alias principal
+  url: 'https://docs.comandoconstrucciones.com',
   baseUrl: '/',
   organizationName: 'comandoconstrucciones',
   projectName: 'comandocalc-docs',
