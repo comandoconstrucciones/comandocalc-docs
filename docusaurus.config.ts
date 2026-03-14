@@ -38,7 +38,8 @@ const config: Config = {
       title: 'ComandoCalc',
       logo: {
         alt: 'ComandoCalc Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
+        style: { height: '32px', width: 'auto' },
       },
       items: [
         {
