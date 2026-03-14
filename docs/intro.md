@@ -15,7 +15,6 @@ sidebar_position: 1
 - **Unidades colombianas** — sistema CGS: kg, cm, kg/cm²
 - **Exportación PDF** — memoria de cálculo lista para entregar al cliente o a la interventoría
 - **API REST** — todos los cálculos disponibles como endpoints JSON para integrar con otros sistemas
-- **Código abierto** — backend Python (FastAPI) y frontend TypeScript (Next.js)
 
 ## ¿Para quién es?
 
@@ -25,27 +24,6 @@ sidebar_position: 1
 | Ingeniero calculista | Verificación de diseños y memorias de cálculo |
 | Empresa constructora | Integración via API en sistemas internos |
 | Estudiante de ingeniería | Referencia de cálculo bajo AISC + NSR-10 |
-
-## Arquitectura
-
-```
-┌─────────────────────────────────────────────────────┐
-│  Frontend (Next.js + TypeScript)                     │
-│  calculadora.comandoconstrucciones.com               │
-│  Vercel                                              │
-└───────────────────┬─────────────────────────────────┘
-                    │ HTTPS / JSON
-┌───────────────────▼─────────────────────────────────┐
-│  API REST (Python + FastAPI)                         │
-│  api.comandoconstrucciones.com                       │
-│  Vercel Serverless Functions                         │
-└───────────────────┬─────────────────────────────────┘
-                    │ SQL
-┌───────────────────▼─────────────────────────────────┐
-│  Supabase PostgreSQL                                 │
-│  160 perfiles de acero · 916 ciudades                │
-└─────────────────────────────────────────────────────┘
-```
 
 ## Repositorios
 
