@@ -53,11 +53,7 @@ const config: Config = {
           label: 'Ir a la App',
           position: 'right',
         },
-        {
-          href: 'https://github.com/comandoconstrucciones/comandocalc',
-          label: 'GitHub',
-          position: 'right',
-        },
+
       ],
     },
     footer: {
