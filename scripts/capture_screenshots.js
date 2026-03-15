@@ -19,7 +19,10 @@ const modules = [
   { id: 'vibration', path: '/calc/vibration' },
   { id: 'steeldeck', path: '/calc/steeldeck' },
   { id: 'flexo-compression', path: '/calc/flexo-compression' },
-  { id: 'budget', path: '/calc/budget' }
+  { id: 'budget', path: '/calc/budget' },
+  { id: 'perfiles', path: '/calc/perfiles', action: 'wait_only' },
+  { id: 'normativa', path: '/normas', action: 'wait_only' },
+  { id: 'industrial-building', path: '/calc/industrial-building', action: 'wait_only' }
 ];
 
 async function run() {

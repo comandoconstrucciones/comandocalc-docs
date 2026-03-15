@@ -6,6 +6,34 @@ sidebar_position: 99
 
 # Changelog
 
+## v0.3.0 — Marzo 2026
+
+### SEO Programático — Páginas individuales por perfil (nuevo)
+- ✅ **393 páginas estáticas** `/calc/perfiles/[slug]` — una por perfil (IPE, HEB, W, Canal C, etc.)
+- ✅ Cada página: sección transversal SVG, tabla de propiedades completa con copy-on-click, tabla comparativa con perfiles adyacentes, FAQ + JSON-LD schema
+- ✅ Navegación entre perfiles de la misma familia con flechas ← →
+- ✅ CTAs a calculadoras con perfil pre-cargado (`?section=IPE-200&type=ipe`)
+- ✅ URLs enviadas a Google Indexing API (393 URLs)
+
+### Módulo Consulta Normativa IA
+- ✅ Icono isométrico verde nuevo
+- ✅ Accesible desde homepage (`/normas`)
+- ✅ 57,287 fragmentos: NSR-10, AISC 360, AWS D1.1, 36 Design Guides
+- ✅ HyDE dual-search + RRF + GPT-4o-mini
+
+### Expansión base de perfiles
+- ✅ **393 perfiles** totales (era 17 IPE solamente)
+- ✅ Familias añadidas: IPN (21), HEM (19), Canal C americano (28), Ángulo L desigual (31), HEA completado, W ampliado (134 perfiles W6–W36)
+- ✅ SVG de sección transversal para todas las familias (IPN/HEM/Canal C/L≠)
+- ✅ TYPE_LABELS completo en ProfileSelect (13 tipos)
+- ✅ ProfileSelect en módulo de presupuesto (reemplaza texto libre)
+
+### Correcciones
+- ✅ PDF: unidades cm⁴/cm³/cm⁶ → cm^4/cm^3/cm^6 (ReportLab ASCII)
+- ✅ Suite de tests: **452/452 passed** (actualización IDs tubulares COL-TR, Fy A500)
+
+---
+
 ## v0.2.0 — Marzo 2026
 
 ### Módulo de Conexiones Estructurales (nuevo)
