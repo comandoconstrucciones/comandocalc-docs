@@ -10,8 +10,8 @@ sidebar_position: 1
 
 ## Características principales
 
-- **15 módulos de cálculo** — desde vigas simples hasta pórticos 2D, naves industriales y columnas compuestas
-- **Base de datos integrada** — 160 perfiles de acero laminado (IPE, HEA, HEB, W, C, L, TR, RHS) y 916 ciudades colombianas con datos de viento y sismo
+- **16 módulos de cálculo** — desde vigas simples hasta pórticos 2D, naves industriales y columnas compuestas
+- **Base de datos integrada** — 160 perfiles de acero laminado (IPE, HEA, HEB, W, C, L, TR, RHS) y 1,000 municipios colombianos con datos de viento y sismo
 - **Unidades colombianas** — sistema CGS: kg, cm, kg/cm²
 - **Exportación PDF** — memoria de cálculo lista para entregar al cliente o a la interventoría
 - **API REST** — todos los cálculos disponibles como endpoints JSON para integrar con otros sistemas
