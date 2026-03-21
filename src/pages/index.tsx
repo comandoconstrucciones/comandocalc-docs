@@ -8,7 +8,7 @@ import styles from './index.module.css';
 const modules = [
   { icon: '🔩', name: 'Viga', desc: 'Flexión, cortante y deflexión AISC F/G', href: '/docs/modulos/viga' },
   { icon: '🏗️', name: 'Columna', desc: 'Compresión axial AISC E', href: '/docs/modulos/columna' },
-  { icon: '🌬️', name: 'Viento', desc: 'NSR-10 Título B — 916 ciudades', href: '/docs/modulos/viento' },
+  { icon: '🌬️', name: 'Viento', desc: 'NSR-10 Título B — 1,000 municipios', href: '/docs/modulos/viento' },
   { icon: '📐', name: 'Cercha', desc: 'FEM 2D — Pratt, Warren, Howe', href: '/docs/modulos/cercha' },
   { icon: '🏛️', name: 'Pórtico', desc: 'FEM 2D — combinaciones LRFD', href: '/docs/modulos/portico' },
   { icon: '💰', name: 'Presupuesto', desc: 'Peso, materiales y mano de obra', href: '/docs/modulos/presupuesto' },
@@ -24,7 +24,7 @@ function HomepageHero() {
           </Heading>
           <p className={styles.heroSubtitle}>
             Cálculo estructural de acero para ingenieros colombianos.<br />
-            <strong>13 módulos</strong> · AISC 360-16 + NSR-10 · API REST · Exportación PDF
+            <strong>17 módulos</strong> · AISC 360-16 + NSR-10 · API REST · Exportación PDF
           </p>
           <div className={styles.heroButtons}>
             <Link className="button button--primary button--lg" to="/docs/intro">
