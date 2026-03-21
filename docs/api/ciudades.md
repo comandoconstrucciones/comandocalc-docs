@@ -6,7 +6,7 @@ sidebar_position: 5
 
 # Endpoint: Ciudades Colombianas
 
-Base de datos de **1,000 municipios** colombianos con parámetros NSR-10 para **viento** (Título B) y **sismo** (Título A).
+Base de datos de **1,200 municipios** colombianos con parámetros NSR-10 para **viento** (Título B) y **sismo** (Título A).
 
 ## Listar ciudades
 
