@@ -1,0 +1,106 @@
+# ComandoCalc — Documentación técnica
+
+> Documentación oficial de ComandoCalc, la calculadora estructural NSR-10 para ingenieros en Colombia. Cubre todos los módulos de cálculo, la API REST, perfiles de acero y normativa aplicada.
+
+**URL:** https://docs.comandoconstrucciones.com  
+**App:** https://calculadora.comandoconstrucciones.com  
+**API:** https://api.comandoconstrucciones.com  
+**Empresa:** Comando Construcciones S.A.S. — Bogotá, Colombia
+
+---
+
+## Guías principales
+
+- **Inicio rápido** — `/intro` — Primer cálculo en 5 minutos, navegación de módulos
+- **Guía de inicio rápido** — `/inicio-rapido` — Flujo completo desde selección de perfil hasta resultados
+- **Unidades y convenciones** — `/unidades` — Sistema métrico (cm), SI (mm), imperial (in). Conversiones automáticas.
+- **Normativa** — `/modulos/normativa` — NSR-10 Títulos A, B, F, G y AISC 360-16
+
+---
+
+## Módulos de cálculo documentados
+
+### Elementos estructurales
+
+- **Viga** — `/modulos/viga` — Diseño a flexión y cortante. NSR-10 Título F / AISC 360 Cap. F. Entradas: perfil, luz, apoyos, cargas. Salidas: relación demanda/capacidad, deflexión, estado límite.
+- **Columna** — `/modulos/columna` — Compresión axial, pandeo, longitud efectiva KL/r. NSR-10 / AISC 360 Cap. E.
+- **Flexo-compresión** — `/modulos/flexo-compresion` — Interacción carga axial + momento, diagrama de interacción P-M.
+- **Placa base** — `/modulos/placa-base` — Dimensionamiento de placa de anclaje, soldadura, pernos. AISC Design Guide 1.
+- **Correas de cubierta** — `/modulos/correas` — Diseño de correas bajo carga de viento y lluvia. Perfiles PC, Z, C.
+- **Correas de fachada** — `/modulos/correas-fachada` — Cerramiento vertical, carga de viento lateral.
+- **Viento** — `/modulos/viento` — Presión de diseño según NSR-10 Título B. Pre-carga automática de Vb por municipio.
+- **Cercha** — `/modulos/cercha` — Análisis estático de cerchas planas, fuerzas en barras, reacciones.
+- **Pórtico** — `/modulos/portico` — Análisis de pórticos simples, diagramas M, V, N.
+- **Steel Deck** — `/modulos/steeldeck` — Losas colaborantes, capacidad de carga, calibre de deck.
+- **Vibraciones de piso** — `/modulos/vibraciones` — Frecuencia natural, criterio de confort humano (AISC DG11).
+- **Columna compuesta** — `/modulos/columna-compuesta` — Sección mixta acero-concreto, AISC 360 Cap. I.
+- **Conexiones** — `/modulos/conexiones` — Conexiones atornilladas (ASTM A325/A490) y soldadas (filete, ranura).
+- **Presupuesto** — `/modulos/presupuesto` — Estimación de peso y costo de estructura metálica.
+- **Nave industrial** — `/modulos/nave-industrial` — Diseño integrado: pórticos, correas, cubierta, placa base.
+
+---
+
+## API REST
+
+- **Introducción** — `/api/introduccion` — Autenticación, límites de tasa, formatos de respuesta
+- **Autenticación** — `/api/autenticacion` — Sin autenticación requerida (API pública de lectura)
+- **Perfiles** — `/api/perfiles` — `GET /api/profiles/` — Catálogo completo de perfiles de acero con propiedades
+- **Ciudades** — `/api/ciudades` — `GET /api/municipalities/` — 1,000 municipios con parámetros NSR-10
+- **Referencia** — `/api/referencia` — Endpoints de cálculo, esquemas de request/response
+
+### Endpoints principales
+
+```
+GET  /api/municipalities/          → Lista municipios con Aa, Av, Ae, Ad, Vb, zona sísmica
+GET  /api/profiles/                → Catálogo perfiles (Ix, Iy, Sx, Sy, Zx, Zy, rx, ry, J, Cw)
+POST /api/calc/beam                → Cálculo de viga
+POST /api/calc/column              → Cálculo de columna
+POST /api/calc/wind                → Cálculo de viento
+GET  /api/earthquakes/recent       → Sismos cercanos (lat, lon, radius, minmag)
+GET  /docs                         → Swagger UI interactivo
+```
+
+---
+
+## Perfiles de acero
+
+Documentación en `/modulos/perfiles`. Base de datos con 160+ perfiles:
+
+| Tipo | Descripción | Fabricantes |
+|------|-------------|-------------|
+| TR (tubo rectangular/cuadrado) | Perfiles huecos fríos y calientes | Corpacero, Diaco, Colmena |
+| PC (correa) | Correas en C y Z | Corpacero, Colmena |
+| IPE | Perfil europeo de ala estrecha | AISC/Europeo |
+| HEA/HEB/HEM | Perfil europeo de ala ancha | AISC/Europeo |
+| W (Wide Flange) | Perfil americano ala ancha | AISC |
+| IPN/UPN | Perfiles en I y U normales | Europeo |
+| L (ángulo) | Ángulos iguales y desiguales | AISC |
+| C (canal) | Canales americanos | AISC |
+
+**Propiedades disponibles:** h, b, tw, tf, A, peso, Ix, Iy, Sx, Sy, Zx, Zy, rx, ry, J, Cw  
+**Sistemas de unidades:** cm (métrico), mm (ETABS/SAP2000), in (AISC)
+
+---
+
+## Parámetros sísmicos Colombia (NSR-10 Apéndice A-4)
+
+1,000 municipios con:
+- **Aa** — Aceleración pico efectiva horizontal de diseño (g)
+- **Av** — Velocidad pico efectiva (g)
+- **Ae** — Aceleración espectral período corto T≤0.1s (g)
+- **Ad** — Aceleración espectral período largo T≥1.0s (g)
+- **Zona** — Alta / Intermedia / Baja
+- **Vb** — Velocidad básica de viento (m/s)
+- **Región viento** — 1 a 5 (NSR-10 Título B)
+
+---
+
+## Changelog
+
+- `/changelog` — Historial de versiones y cambios
+
+---
+
+## Sitemap
+
+- `https://docs.comandoconstrucciones.com/sitemap.xml`
